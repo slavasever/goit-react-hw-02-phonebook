@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { customAlphabet } from 'nanoid';
+import PropTypes from 'prop-types';
 // import s from './ContactForm.module.css';
 
 const nanoid = customAlphabet('1234567890abcdef', 5);
 
 class ContactForm extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  };
+
   state = {
     name: '',
     number: '',
@@ -26,6 +31,7 @@ class ContactForm extends Component {
     const { onSubmit } = this.props;
 
     onSubmit({ id, name, number });
+    this.formReset();
   };
 
   formReset = () => {

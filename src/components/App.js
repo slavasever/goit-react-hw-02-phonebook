@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { customAlphabet } from 'nanoid';
 import Section from 'Section';
+import ContactForm from './ContactForm';
+import ContactsList from './ContactsList';
+import ContactItem from './ContactItem';
+import Filter from './Filter';
 
-const nanoid = customAlphabet('1234567890abcdef', 5);
 class App extends Component {
   state = {
     contacts: [
@@ -12,34 +14,32 @@ class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
-  inputHandler = event => {
+  addContact = contact => {
+    const { contacts } = this.state;
+    const contactInList = contacts.some(
+      item => item.name.toLocaleLowerCase() === contact.name.toLocaleLowerCase()
+    );
+
+    contactInList
+      ? alert(`${contact.name} is already in contacts!`)
+      : this.setState(prevState => ({
+          contacts: [contact, ...prevState.contacts],
+        }));
+  };
+
+  deleteContact = id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
+    }));
+  };
+
+  filterHandler = event => {
     const { name, value } = event.currentTarget;
-    // console.log(event.currentTarget.name);
+
     this.setState({
       [name]: value,
-    });
-  };
-
-  submitHandler = event => {
-    event.preventDefault();
-
-    const { contacts, name, number } = this.state;
-    const id = nanoid();
-
-    this.setState(prevState => ({
-      contacts: [{ id, name, number }, ...contacts],
-    }));
-    this.formReset();
-  };
-
-  formReset = () => {
-    this.setState({
-      name: '',
-      number: '',
     });
   };
 
@@ -52,74 +52,33 @@ class App extends Component {
   contactFiltration = () => {
     const { contacts, filter } = this.state;
     const normalizedFilter = filter.toLowerCase();
+
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
 
   render() {
-    const { name, number, filter } = this.state;
+    const { filter } = this.state;
     const filteredContacts = this.contactFiltration();
 
     return (
       <>
         <Section title="Phonebook">
-          <form onSubmit={this.submitHandler}>
-            <label>
-              Name
-              <input
-                type="text"
-                name="name"
-                pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-                value={name}
-                required
-                onChange={this.inputHandler}
-              />
-            </label>
-            <label>
-              Number
-              <input
-                type="tel"
-                name="number"
-                pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-                title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-                required
-                value={number}
-                onChange={this.inputHandler}
-              />
-            </label>
-            <button type="submit">Add contact</button>
-          </form>
+          <ContactForm onSubmit={this.addContact} />
         </Section>
         <Section title="Contacts">
-          <div>
-            <label>
-              Find contacts by name
-              <input
-                type="text"
-                name="filter"
-                value={filter}
-                onChange={this.inputHandler}
-              />
-            </label>
-            <button type="button" onClick={this.filterReset}>
-              Clear
-            </button>
-          </div>
-
-          <ul>
-            {filteredContacts.map(contact => {
-              const { id, name, number } = contact;
-              return (
-                <li key={id}>
-                  <p>
-                    {name}: {number}
-                  </p>
-                </li>
-              );
-            })}
-          </ul>
+          <Filter
+            filter={filter}
+            onChange={this.filterHandler}
+            onClick={this.filterReset}
+          />
+          <ContactsList>
+            <ContactItem
+              contacts={filteredContacts}
+              clickHandler={this.deleteContact}
+            />
+          </ContactsList>
         </Section>
       </>
     );
