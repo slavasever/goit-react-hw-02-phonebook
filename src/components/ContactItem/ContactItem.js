@@ -7,11 +7,15 @@ const ContactItem = ({ contacts, clickHandler }) => {
     const { id, name, number } = contact;
 
     return (
-      <li key={id}>
-        <p>
-          {name}: {number}
+      <li key={id} className={s.item}>
+        <p className={s.text}>
+          - {name}: {number}
         </p>
-        <button type="button" onClick={() => clickHandler(id)}>
+        <button
+          type="button"
+          className={s.button}
+          onClick={() => clickHandler(id)}
+        >
           Delete
         </button>
       </li>

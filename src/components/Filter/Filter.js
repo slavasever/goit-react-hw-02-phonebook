@@ -4,15 +4,21 @@ import s from './Filter.module.css';
 
 const Filter = ({ filter, onChange, onClick }) => {
   return (
-    <>
-      <label>
+    <div className={s.wrapper}>
+      <label htmlFor="filter" className={s.label}>
         Find contacts by name
-        <input type="text" name="filter" value={filter} onChange={onChange} />
       </label>
-      <button type="button" onClick={onClick}>
+      <input
+        type="text"
+        name="filter"
+        value={filter}
+        className={s.input}
+        onChange={onChange}
+      />
+      <button type="button" className={s.button} onClick={onClick}>
         Clear
       </button>
-    </>
+    </div>
   );
 };
 
