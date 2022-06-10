@@ -12,7 +12,6 @@ const ContactItem = ({ id, name, number, onClick }) => {
         type="button"
         className={s.button}
         onClick={() => {
-          console.log(id);
           onClick(id);
         }}
       >
