@@ -24,7 +24,11 @@ const ContactList = ({ contacts, clickHandler }) => {
 };
 
 ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   clickHandler: PropTypes.func.isRequired,
 };
 
