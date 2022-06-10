@@ -2,30 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import s from './ContactItem.module.css';
 
-const ContactItem = ({ contacts, clickHandler }) => {
-  return contacts.map(contact => {
-    const { id, name, number } = contact;
-
-    return (
-      <li key={id} className={s.item}>
-        <p className={s.text}>
-          - {name}: {number}
-        </p>
-        <button
-          type="button"
-          className={s.button}
-          onClick={() => clickHandler(id)}
-        >
-          Delete
-        </button>
-      </li>
-    );
-  });
+const ContactItem = ({ id, name, number, onClick }) => {
+  return (
+    <li className={s.item}>
+      <p className={s.text}>
+        - {name}: {number}
+      </p>
+      <button
+        type="button"
+        className={s.button}
+        onClick={() => {
+          console.log(id);
+          onClick(id);
+        }}
+      >
+        Delete
+      </button>
+    </li>
+  );
 };
 
 ContactItem.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  clickHandler: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default ContactItem;

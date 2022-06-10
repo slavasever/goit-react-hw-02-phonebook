@@ -1,13 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import s from './ContactsList.module.css';
 
-const ContactForm = ({ children }) => {
-  return <ul className={s.list}>{children}</ul>;
+import ContactItem from 'components/ContactItem';
+
+const ContactList = ({ contacts, clickHandler }) => {
+  return (
+    <ul>
+      {contacts.map(contact => {
+        const { id, name, number } = contact;
+
+        return (
+          <ContactItem
+            key={id}
+            id={id}
+            name={name}
+            number={number}
+            onClick={clickHandler}
+          />
+        );
+      })}
+    </ul>
+  );
 };
 
-ContactForm.propTypes = {
-  children: PropTypes.node.isRequired,
+ContactList.propTypes = {
+  contacts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  clickHandler: PropTypes.func.isRequired,
 };
 
-export default ContactForm;
+export default ContactList;

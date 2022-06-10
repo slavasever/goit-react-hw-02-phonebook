@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import initialState from '../data.json';
-import Section from 'Section';
-import ContactForm from './ContactForm';
-import ContactsList from './ContactsList';
-import ContactItem from './ContactItem';
-import Filter from './Filter';
+import initialState from './data.json';
+import Section from 'components/Section';
+import ContactForm from './components/ContactForm';
+import ContactsList from './components/ContactsList';
+import Filter from './components/Filter';
 
 class App extends Component {
   state = {
@@ -69,12 +68,10 @@ class App extends Component {
             onChange={this.filterHandler}
             onClick={this.filterReset}
           />
-          <ContactsList>
-            <ContactItem
-              contacts={filteredContacts}
-              clickHandler={this.deleteContact}
-            />
-          </ContactsList>
+          <ContactsList
+            contacts={filteredContacts}
+            clickHandler={this.deleteContact}
+          ></ContactsList>
         </Section>
       </>
     );
